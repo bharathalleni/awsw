@@ -1,0 +1,12 @@
+#!/bin/bash
+
+AWS_PROFILE="$AWS_PROFILE" _awswitch
+
+chosen_profile="$(cat ~/.awswitch)"
+
+if [ -z "$chosen_profile" ]
+then
+  unset AWS_PROFILE
+else
+  export AWS_PROFILE="$chosen_profile"
+fi
