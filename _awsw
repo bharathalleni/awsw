@@ -1,6 +1,11 @@
 #!/bin/bash
 
-AWS_PROFILE="$AWS_PROFILE" _awswitch
+if [ -z "$1" ]
+then
+      AWS_PROFILE="$AWS_PROFILE" _awswitch
+else
+      AWS_PROFILE="$AWS_PROFILE"
+fi
 
 chosen_profile="$(cat ~/.awswitch)"
 

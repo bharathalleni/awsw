@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 	"gopkg.in/ini.v1"
 	"io/ioutil"
@@ -9,17 +10,22 @@ import (
 	"strings"
 )
 
-var curr_user, err = user.Current()
-var userHome = curr_user.HomeDir
+var activeUser, err = user.Current()
+var userHome = activeUser.HomeDir
 var awsConf = userHome + "/.aws/config"
 var confFile = userHome + "/.awswitch"
 
 func main() {
 
+	color.Set(color.FgCyan)
+	fmt.Println("Active Profile :", getActiveProfile())
+	color.Unset()
+
 	profiles := GetProfiles()
 	prompt := promptui.Select{
-		Label: "Choose your AWS Profile",
-		Items: profiles,
+		Label:    "Choose the AWS Profile to switch to",
+		Items:    profiles,
+		HideHelp: true,
 	}
 
 	_, result, prmt_err := prompt.Run()
@@ -35,8 +41,18 @@ func main() {
 		choosenProfile = strings.Split(result, " ")[1]
 	}
 	WriteConfFile(choosenProfile)
-	println("You choose", choosenProfile)
+	println("Switched AWS profile to", choosenProfile)
 
+}
+
+func getActiveProfile() string {
+	// read the whole file at once
+	activeProfile, err := ioutil.ReadFile(confFile)
+	if err != nil {
+		panic(err)
+	}
+
+	return fmt.Sprintf(string(activeProfile))
 }
 
 func GetProfiles() []string {
