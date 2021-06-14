@@ -18,13 +18,11 @@ var confFile = userHome + "/.awswitch"
 
 func main() {
 
-	TouchFile(confFile)
-
 	if _, err := os.Stat(awsConf); os.IsNotExist(err) {
 		color.Red("\nCould not file AWS configuration file. Make sure that your AWS profiles are correctly configured in the AWS CLI.\nLearn More : https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html\n")
 		os.Exit(0)
 	}
-
+	TouchFile(confFile)
 	color.Set(color.FgCyan)
 	fmt.Println("Active Profile :", getActiveProfile())
 	color.Unset()
