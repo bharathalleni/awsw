@@ -6,6 +6,7 @@ import (
 	"github.com/manifoldco/promptui"
 	"gopkg.in/ini.v1"
 	"io/ioutil"
+	"os"
 	"os/user"
 	"strings"
 )
@@ -16,6 +17,8 @@ var awsConf = userHome + "/.aws/config"
 var confFile = userHome + "/.awswitch"
 
 func main() {
+
+	TouchFile(confFile)
 
 	color.Set(color.FgCyan)
 	fmt.Println("Active Profile :", getActiveProfile())
@@ -43,6 +46,14 @@ func main() {
 	WriteConfFile(choosenProfile)
 	println("Switched AWS profile to", choosenProfile)
 
+}
+
+func TouchFile(name string) error {
+	file, err := os.OpenFile(name, os.O_RDONLY|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+	return file.Close()
 }
 
 func getActiveProfile() string {
