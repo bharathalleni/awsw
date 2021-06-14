@@ -20,11 +20,16 @@ func main() {
 
 	TouchFile(confFile)
 
+	if _, err := os.Stat(awsConf); os.IsNotExist(err) {
+		color.Red("\nCould not file AWS configuration file. Make sure that your AWS profiles are correctly configured in the AWS CLI.\nLearn More : https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html\n")
+		os.Exit(0)
+	}
+
 	color.Set(color.FgCyan)
 	fmt.Println("Active Profile :", getActiveProfile())
 	color.Unset()
-
 	profiles := GetProfiles()
+
 	prompt := promptui.Select{
 		Label:    "Choose the AWS Profile to switch to",
 		Items:    profiles,
@@ -67,14 +72,13 @@ func getActiveProfile() string {
 }
 
 func GetProfiles() []string {
-	cfg, aws_err := ini.Load(awsConf)
-
-	if aws_err != nil {
-		fmt.Printf("Error loading AWS CLI configuration %v\n", aws_err)
-	}
-
+	cfg, aws_conf_err := ini.Load(awsConf)
 	raw_profiles := cfg.SectionStrings()
 	i := 0 // Index to delete
+
+	if aws_conf_err != nil {
+		panic(aws_conf_err)
+	}
 
 	copy(raw_profiles[i:], raw_profiles[i+1:])        // Shift a[i+1:] left one index.
 	raw_profiles[len(raw_profiles)-1] = ""            // Erase last element (write zero value).
