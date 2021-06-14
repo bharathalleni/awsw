@@ -7,6 +7,7 @@ Interactively switch between AWS Profiles
 
 
 ## Setup
+**Linux**
 
     curl -O https://raw.githubusercontent.com/bharathalleni/awsw/main/_awswitch
     curl -O https://raw.githubusercontent.com/bharathalleni/awsw/main/_awsw
