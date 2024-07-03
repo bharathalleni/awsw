@@ -17,9 +17,14 @@ Interactively switch between AWS Profiles
 Add the following line to your `.bashrc` or `.zshrc` file
 
     alias awsw="source _awsw" && source _awsw reset
-or
+Or you can just run this in your terminal.
+
+**Linux:**
 
     echo 'alias awsw="source _awsw" && source _awsw reset' >> ~/.bashrc
+**Mac:**
+
+    echo 'alias awsw="source _awsw" && source _awsw reset' >> ~/.zshrc
 ## Usage
 
     awsw
